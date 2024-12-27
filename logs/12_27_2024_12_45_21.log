@@ -1,0 +1,6 @@
+[2024-12-27 12:45:23,780] 26 INFO: Entered the data injection method/component
+[2024-12-27 12:45:23,784] 31 INFO: Read the dataset as dataframe
+[2024-12-27 12:45:23,790] 38 INFO: Raw data saved successfully
+[2024-12-27 12:45:23,790] 41 INFO: Train-test split initiated
+[2024-12-27 12:45:23,799] 49 INFO: Train and test datasets saved successfully
+[2024-12-27 12:45:23,799] 52 INFO: Data injection completed
