@@ -1,11 +1,9 @@
 import sys
- 
-
- 
+# from src.logger import logging 
 
 def error_message_detail(error, error_detail: sys):
-    # Extract error details
-    _, _, exc_tb = error_detail.exc_info()
+    # Extract error details from sys.exc_info()
+    exc_type, exc_value, exc_tb = error_detail  # Unpack the tuple returned by sys.exc_info()
     file_name = exc_tb.tb_frame.f_code.co_filename
     error_message = (
         f"Error occurred in script: [{file_name}], "
@@ -24,4 +22,11 @@ class CustomException(Exception):
         return self.error_message
 
 
- 
+# if __name__ == "__main__":
+#     try:
+#         a = 1 / 0
+    
+#     except Exception as e:
+#         logging.info("Divided by zero")
+#         # Raise the custom exception with the exception details
+#         raise CustomException("Divided by zero", sys.exc_info())
