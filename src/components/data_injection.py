@@ -7,6 +7,10 @@ import pandas as pd  # Library for data manipulation and analysis
 from sklearn.model_selection import train_test_split  # Function for splitting datasets into training and testing sets
 from dataclasses import dataclass  # Decorator for creating data classes
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
+
 # Configuration class for managing file paths
 @dataclass
 class DataInjectionConfig:
@@ -66,4 +70,41 @@ if __name__ == "__main__":
     # Create an instance of the DataInjection class
     obj = DataInjection()
     # Call the method to start the data injection process
-    obj.initialize_data_injection()
+    train_data,test_data =obj.initialize_data_injection()
+
+    data_transformation= DataTransformation()
+    data_transformation.initiate_data_transformation(train_data,test_data)
+
+'''
+ 
+
+The code is implemented to streamline the data ingestion process as part of a machine learning pipeline.
+ Here’s why each step is necessary:
+
+    Data Ingestion:
+        In any ML pipeline, the first step is to collect and organize the raw data. The code reads a dataset
+          (stud.csv) and prepares it for subsequent stages like preprocessing, feature engineering, and model training.
+
+    Directory Management:
+        The artifacts directory is created to store processed data files (raw, train, and test datasets)
+          in a structured manner. This ensures reusability and organization of data during experiments.
+
+    Train-Test Split:
+        Splitting the dataset into training and testing sets is crucial for evaluating the model’s
+        performance on unseen data. This ensures the model generalizes well and prevents overfitting.
+
+    Logging:
+        Logging provides traceability and helps debug issues by capturing detailed information about the pipeline’s 
+        execution.
+
+    Error Handling:
+        Using a custom exception class allows for more informative error messages, helping to identify
+          and fix issues efficiently during pipeline execution.
+
+    Reusability and Automation:
+        By encapsulating the logic in a class and using configurations, the code is reusable and adaptable 
+        for other datasets or projects. Automating the ingestion process saves time and ensures consistency.
+
+In summary, this code is a foundational step in building a robust, organized, and scalable ML pipeline, 
+making it easier to manage data and debug issues efficiently.
+'''
