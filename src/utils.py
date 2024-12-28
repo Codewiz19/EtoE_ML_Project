@@ -1,36 +1,62 @@
-# This will contain common functionalities which the whole project will be using
+import os
+import sys
 
-import os  # Module for interacting with the operating system (e.g., paths, directories)
-import sys  # Provides access to system-specific parameters and functions
+import numpy as np 
+import pandas as pd
+import dill
+import pickle
+from sklearn.metrics import r2_score
+from sklearn.model_selection import GridSearchCV
 
-import pandas as pd  # Library for data manipulation and analysis
-import numpy as np  # Library for numerical computations
+from src.exception import CustomException
 
-import dill  # Library for serializing and deserializing Python objects
-
-from src.exception import CustomException  # Custom exception class for handling errors
-
-# Function to save a Python object to a specified file path
 def save_object(file_path, obj):
-    """
-    Saves a Python object to the specified file path using dill.
-    
-    Args:
-        file_path (str): Path where the object will be saved.
-        obj: The Python object to save.
-    
-    Raises:
-        CustomException: If an error occurs during the saving process.
-    """
     try:
-        # Ensure the directory for the file path exists
-        dir_path = os.path.dirname(file_path)  # Extract the directory path
-        os.makedirs(dir_path, exist_ok=True)  # Create the directory if it doesn't exist
+        dir_path = os.path.dirname(file_path)
 
-        # Open the file in binary write mode and save the object
+        os.makedirs(dir_path, exist_ok=True)
+
         with open(file_path, "wb") as file_obj:
-            dill.dump(obj, file_obj)  # Serialize the object using dill
+            pickle.dump(obj, file_obj)
 
     except Exception as e:
-        # Raise a custom exception if any error occurs
+        raise CustomException(e, sys)
+    
+def evaluate_models(X_train, y_train,X_test,y_test,models,param):
+    try:
+        report = {}
+
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+            para=param[list(models.keys())[i]]
+
+            gs = GridSearchCV(model,para,cv=3)
+            gs.fit(X_train,y_train)
+
+            model.set_params(**gs.best_params_)
+            model.fit(X_train,y_train)
+
+            #model.fit(X_train, y_train)  # Train model
+
+            y_train_pred = model.predict(X_train)
+
+            y_test_pred = model.predict(X_test)
+
+            train_model_score = r2_score(y_train, y_train_pred)
+
+            test_model_score = r2_score(y_test, y_test_pred)
+
+            report[list(models.keys())[i]] = test_model_score
+
+        return report
+
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return pickle.load(file_obj)
+
+    except Exception as e:
         raise CustomException(e, sys)

@@ -1,4 +1,0 @@
-[2024-12-24 19:20:25,970] 21 INFO: Logging has started
-[2024-12-24 19:20:25,972] 23 WARNING: This is a WARNING message
-[2024-12-24 19:20:25,972] 24 ERROR: This is an ERROR message
-[2024-12-24 19:20:25,972] 25 CRITICAL: This is a CRITICAL message
